@@ -37,7 +37,7 @@ imputer = imputer.fit(X[:, 1:3])
 X[:, 1:3] = imputer.transform(X[:, 1:3])
 
 # Ecoding categorical data (country and purchased)
-# Country first
+# Country first (the independent variable)
 labelencoder_X = LabelEncoder()
 X[:, 0] = labelencoder_X.fit_transform(X[:, 0])  # country only
 
@@ -46,7 +46,7 @@ X[:, 0] = labelencoder_X.fit_transform(X[:, 0])  # country only
 onehotencoder = OneHotEncoder(categorical_features=[0])
 X = onehotencoder.fit_transform(X).toarray()
 
-# Encode purchased
+# Encode purchased (the dependant variable)
 labelencoder_y = LabelEncoder()
 y = labelencoder_y.fit_transform(y)
 
