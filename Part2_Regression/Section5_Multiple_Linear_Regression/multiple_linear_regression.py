@@ -1,4 +1,4 @@
-# Simple linear regression
+# Multiple linear regression
 
 # Data Preprocessing
 # Importing the libraries
