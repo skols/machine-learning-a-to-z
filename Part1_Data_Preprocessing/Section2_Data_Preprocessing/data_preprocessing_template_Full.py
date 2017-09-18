@@ -60,4 +60,5 @@ sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test)
 # Scaling dummy variables here too
-# Don't need to apply feature scaling to y in this case
+sc_y = StandardScaler()
+y_train = sc_y.fit_transform(y_train)
