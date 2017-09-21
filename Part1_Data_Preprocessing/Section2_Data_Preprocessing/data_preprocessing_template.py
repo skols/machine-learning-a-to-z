@@ -1,8 +1,8 @@
 # Data Preprocessing
 
 # Importing the libraries
-# import numpy as np
-# import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 import pandas as pd
 import os
 # from sklearn.cross_validation import train_test_split  # deprecated
