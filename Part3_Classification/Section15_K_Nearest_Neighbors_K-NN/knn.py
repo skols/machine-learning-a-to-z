@@ -1,4 +1,4 @@
-# Classification Template
+# K-Nearest Neighbors (K-NN)
 
 # Importing the libraries
 import numpy as np
@@ -10,10 +10,11 @@ from sklearn.model_selection import train_test_split  # splitting the dataset
 from sklearn.preprocessing import StandardScaler # feature scaling
 from sklearn.metrics import confusion_matrix
 from matplotlib.colors import ListedColormap  # prediction regions plot
+from sklearn.neighbors import KNeighborsClassifier
 
 # Importing the dataset
 os.chdir("C:/Development/Courses/Kirill Eremenko Data Science Courses/\
-Machine_Learning_A-Z/Part3_Classification/")
+Machine_Learning_A-Z/Part3_Classification/Section15_K_Nearest_Neighbors_K-NN")
 dataset = pd.read_csv("Social_Network_Ads.csv")
 
 # Create a matrix of features with Age and EstimatedSalary
@@ -36,8 +37,10 @@ sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test)
 
-# Fitting the classifier to the Training set
-# Create your classifier here
+# Fitting K-NN to the Training set
+# metric="minkowski" and p=2 so Euclidean distance is used
+classifier = KNeighborsClassifier(n_neighbors=5, metric="minkowski", p=2)
+classifier.fit(X_train, y_train)
 
 # Predicting the Test set results
 y_pred = classifier.predict(X_test)
@@ -61,7 +64,7 @@ plt.ylim(X2.min(), X2.max())
 for i, j in enumerate(np.unique(y_set)):
     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
                 c = ListedColormap(('red', 'green'))(i), label = j)
-plt.title("Classifier (Training Set)")
+plt.title("K-NN (Training Set)")
 plt.xlabel("Age")
 plt.ylabel("Estimated Salary")
 plt.legend()
@@ -83,7 +86,7 @@ plt.ylim(X2.min(), X2.max())
 for i, j in enumerate(np.unique(y_set)):
     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
                 c = ListedColormap(('red', 'green'))(i), label = j)
-plt.title("Classifier (Test Set)")
+plt.title("K-NN (Test Set)")
 plt.xlabel("Age")
 plt.ylabel("Estimated Salary")
 plt.legend()
