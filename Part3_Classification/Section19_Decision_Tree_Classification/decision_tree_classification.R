@@ -1,7 +1,7 @@
-# Classification Template
+# Decision Tree
 
 # Importing the dataset
-setwd("C:/Development/Courses/Kirill Eremenko Data Science Courses/Machine_Learning_A-Z/Part3_Classification/")
+setwd("C:/Development/Courses/Kirill Eremenko Data Science Courses/Machine_Learning_A-Z/Part3_Classification/Section19_Decision_Tree_Classification")
 dataset <- read.csv("Social_Network_Ads.csv")
 dataset <- dataset[, 3:5]
 
@@ -19,12 +19,14 @@ test_set <- subset(dataset, split == FALSE)
 training_set[, 1:2] <- scale(training_set[, 1:2])
 test_set[, 1:2] <- scale(test_set[, 1:2])
 
-# Fitting Classifier to the Training set
-# Create your classifier here
-
+# Fitting Decision Tree to the Training set
+library(rpart)
+classifier <- rpart(formula=Purchased ~ .,
+                    data=training_set)
 
 # Predicting the Test set results
-y_pred <- predict(classifier, newdata=test_set[-3])  # remove last column of test set
+y_pred <- predict(classifier, newdata=test_set[-3], type="class")  # remove last column of test set
+# Use type="class" so don't get a matrix of results
 
 # Making the Confusion Matrix
 cm = table(test_set[, 3], y_pred)
@@ -37,9 +39,9 @@ X1 <- seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by=0.01)
 X2 <- seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by=0.01)
 grid_set <- expand.grid(X1, X2)
 colnames(grid_set) <- c("Age", "EstimatedSalary")
-y_grid <- predict(classifier, newdata=grid_set)
+y_grid <- predict(classifier, newdata=grid_set, type="class")
 plot(set[, -3],
-     main="Classifier (Training Set)",
+     main="Decision Tree (Training Set)",
      xlab="Age", ylab="Estimated Salary",
      xlim=range(X1), ylim=range(X2))
 contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add=TRUE)
@@ -53,11 +55,15 @@ X1 <- seq(min(set[, 1]) - 1, max(set[, 1]) + 1, by=0.01)
 X2 <- seq(min(set[, 2]) - 1, max(set[, 2]) + 1, by=0.01)
 grid_set <- expand.grid(X1, X2)
 colnames(grid_set) <- c("Age", "EstimatedSalary")
-y_grid <- predict(classifier, newdata=grid_set)
+y_grid <- predict(classifier, newdata=grid_set, type="class")
 plot(set[, -3],
-     main="Classifier (Test Set)",
+     main="Decision Tree (Test Set)",
      xlab="Age", ylab="Estimated Salary",
      xlim=range(X1), ylim=range(X2))
 contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add=TRUE)
 points(grid_set, pch=19, col=ifelse(y_grid==1, "springgreen3", "tomato"))
 points(set, pch=21, bg=ifelse(set[, 3]==1, "green4", "red3"))
+
+# Plotting the Decision Tree
+plot(classifier)
+text(classifier)

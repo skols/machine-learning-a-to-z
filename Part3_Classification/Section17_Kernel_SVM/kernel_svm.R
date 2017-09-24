@@ -1,12 +1,9 @@
-# Classification Template
+# Kernel SVM
 
 # Importing the dataset
-setwd("C:/Development/Courses/Kirill Eremenko Data Science Courses/Machine_Learning_A-Z/Part3_Classification/")
+setwd("C:/Development/Courses/Kirill Eremenko Data Science Courses/Machine_Learning_A-Z/Part3_Classification/Section17_Kernel_SVM")
 dataset <- read.csv("Social_Network_Ads.csv")
 dataset <- dataset[, 3:5]
-
-# Encoding the target feature as factor
-dataset$Purchased <- factor(dataset$Purchased, levels=c(0, 1))
 
 # Splitting the dataset into Training set and Test set
 library(caTools)
@@ -19,9 +16,12 @@ test_set <- subset(dataset, split == FALSE)
 training_set[, 1:2] <- scale(training_set[, 1:2])
 test_set[, 1:2] <- scale(test_set[, 1:2])
 
-# Fitting Classifier to the Training set
-# Create your classifier here
-
+# Fitting Kernel SVM to the Training set
+library(e1071)
+classifier <- svm(formula=Purchased ~ .,
+                  data=training_set,
+                  type="C-classification",
+                  kernel="radial")  # radial basic is Gaussian
 
 # Predicting the Test set results
 y_pred <- predict(classifier, newdata=test_set[-3])  # remove last column of test set
@@ -39,7 +39,7 @@ grid_set <- expand.grid(X1, X2)
 colnames(grid_set) <- c("Age", "EstimatedSalary")
 y_grid <- predict(classifier, newdata=grid_set)
 plot(set[, -3],
-     main="Classifier (Training Set)",
+     main="Kernel SVM (Training Set)",
      xlab="Age", ylab="Estimated Salary",
      xlim=range(X1), ylim=range(X2))
 contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add=TRUE)
@@ -55,7 +55,7 @@ grid_set <- expand.grid(X1, X2)
 colnames(grid_set) <- c("Age", "EstimatedSalary")
 y_grid <- predict(classifier, newdata=grid_set)
 plot(set[, -3],
-     main="Classifier (Test Set)",
+     main="Kernel SVM (Test Set)",
      xlab="Age", ylab="Estimated Salary",
      xlim=range(X1), ylim=range(X2))
 contour(X1, X2, matrix(as.numeric(y_grid), length(X1), length(X2)), add=TRUE)
