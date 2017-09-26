@@ -8,6 +8,9 @@ import os
 # from sklearn.cross_validation import train_test_split  # deprecated
 from sklearn.model_selection import train_test_split  # splitting the dataset
 
+# To see the full array, run the following
+np.set_printoptions(threshold=np.nan)
+
 # Importing the dataset
 os.chdir("C:/Development/Courses/Kirill Eremenko Data Science Courses/\
 Machine_Learning_A-Z/Part1_Data_Preprocessing/Section2_Data_Preprocessing/")
@@ -18,9 +21,6 @@ X = dataset.iloc[:, :-1].values
 
 # Create the dependent variable vector; last column only
 y = dataset.iloc[:, 3].values
-
-# To see the full array, run the following
-# np.set_printoptions(threshold=np.nan)
 
 # Splitting the dataset into Training set and Test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2,
