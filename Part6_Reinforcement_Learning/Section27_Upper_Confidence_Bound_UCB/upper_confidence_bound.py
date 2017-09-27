@@ -37,6 +37,8 @@ for n in range(0, N):
     max_upper_bound = 0
     for i in range(0, d):
         if numbers_of_selections[i] > 0:
+            # The 10 first rounds select the 10 ads and after round 10, the
+            # below strategy gets used
             average_reward = sums_of_rewards[i] / numbers_of_selections[i]
             delta_i = sqrt((3/2) * (log(n+1)/numbers_of_selections[i]))
             upper_bound = average_reward + delta_i
