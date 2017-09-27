@@ -8,7 +8,7 @@ dataset <- read.csv("Ads_CTR_Optimisation.csv")
 # Step 1
 N <- nrow(dataset)  # 10000
 d <- length(dataset)  # 10
-ads_selected <- integer()
+ads_selected <- integer(0)
 number_of_selections <- integer(d)
 sums_of_rewards <- integer(d)
 total_reward <- 0
