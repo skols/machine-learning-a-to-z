@@ -1,0 +1,16 @@
+False Positive: Predicts it will happen but it doesn't
+False Negative: Predicts it won't happen but it does
+
+cm is the Confusion Matrix variable
+Able to get value from each cell
+R
+    True Negative (upper left): cm[[1]]
+    True Positive (lower right): cm[[4]]
+    False Positive (Type I error; upper right): cm[[3]]
+    False Negative (Type II error; lower left): cm[[2]]
+
+Python
+    True Negative (upper left): cm[0][0]
+    True Positive (lower right): cm[1][1]
+    False Positive (Type I error; upper right): cm[0][1]
+    False Negative (Type II error; lower left): cm[1][0]

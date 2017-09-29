@@ -81,6 +81,15 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20,
 # random_state set to 0 so we all get the same result
 # 42 is a good choice for random_state otherwise
 
+def cm_stats(y_test, y_pred, class_type):
+    cm = confusion_matrix(y_test, y_pred)
+    accuracy = (cm[0][0] + cm[1][1])/len(y_test)
+    precision = cm[1][1]/(cm[1][1] + cm[0][1])
+    recall = cm[1][1]/(cm[1][1] + cm[1][0])
+    f1_score = 2 * precision * recall / (precision + recall)
+    print("{0}\n cm: {1}, accuracy: {2}, precision: {3}, recall: {4},\
+ f1_score: {5}".format(class_type, cm, accuracy, precision, recall, f1_score))
+
 # Fitting Naive Bayes to the Training set
 classifier = GaussianNB()
 classifier.fit(X_train, y_train)
@@ -88,5 +97,94 @@ classifier.fit(X_train, y_train)
 # Predicting the Test set results
 y_pred = classifier.predict(X_test)
 
-# Making the Confusion Matrix
-cm = confusion_matrix(y_test, y_pred)
+cm_stats(y_test, y_pred, "Naive Bayes")
+
+# Fitting Logistic Regression to the Training set
+from sklearn.linear_model import LogisticRegression
+classifier = LogisticRegression(random_state=0)
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+cm_stats(y_test, y_pred, "Logistic Regression")
+
+
+# Fitting K-NN to the Training set
+# metric="minkowski" and p=2 so Euclidean distance is used
+from sklearn.neighbors import KNeighborsClassifier
+classifier = KNeighborsClassifier(n_neighbors=5, metric="minkowski", p=2)
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+cm_stats(y_test, y_pred, "K-NN")
+
+
+# Fitting SVM to the Training set
+from sklearn.svm import SVC
+classifier = SVC(kernel="linear", random_state=0)
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+cm_stats(y_test, y_pred, "SVM")
+
+
+# Fitting Kernel SVM to the Training set
+classifier = SVC(kernel="rbf", random_state=42)
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+cm_stats(y_test, y_pred, "Kernel SVM")
+
+
+# Fitting Decision Tree to the Training set
+from sklearn.tree import DecisionTreeClassifier
+classifier = DecisionTreeClassifier(criterion="entropy", random_state=0)
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+cm_stats(y_test, y_pred, "Decision Tree")
+
+
+# Fitting Random Forest Classification to the Training set
+from sklearn.ensemble import RandomForestClassifier
+classifier = RandomForestClassifier(n_estimators=10,
+                                    criterion="entropy",
+                                    random_state=0)
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+cm_stats(y_test, y_pred, "Random Forest")
+
+
+# Fitting CART to the Training set
+from sklearn.tree import DecisionTreeClassifier
+classifier = DecisionTreeClassifier()
+classifier.fit(X_train, y_train)
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+cm_stats(y_test, y_pred, "CART")
+
+
+# Fitting Maximum Entropy to the Training set
+from nltk.classify.maxent import MaxentClassifier
+algorithm = nltk.classify.MaxentClassifier.ALGORITHMS[0]
+classifier = MaxentClassifier.train()
+
+
+# Predicting the Test set results
+y_pred = classifier.predict(X_test)
+
+cm_stats(y_test, y_pred, "CART")

@@ -57,5 +57,113 @@ classifier <- randomForest(x=training_set[-length(dataset)],
 # Predicting the Test set results
 y_pred <- predict(classifier, newdata=test_set[-length(dataset)])  # remove last column of test set
 
-# Making the Confusion Matrix
-cm = table(test_set[, length(dataset)], y_pred)
+cm_stats <- function(y_test, y_pred, class_type) {
+  cm <- table(test_set[, length(dataset)], y_pred)
+  accuracy <- (cm[[1]] + cm[[4]])/nrow(y_test)
+  precision <- cm[[4]]/(cm[[4]] + cm[[3]])
+  recall <- cm[[4]]/(cm[[4]] + cm[[2]])
+  f1_score <- 2 * precision * recall / (precision + recall)
+  print(class_type)
+  print(cm)
+  paste("accuracy: ", accuracy, "precision: ", precision, "recall: ", recall, "f1_score: ", f1_score)
+  # paste("precision: ", precision)
+  # paste("recall: ", recall)
+  # paste("f1_score: ", f1_score)
+}
+
+cm_stats(test_set, y_pred, "Random Forest")
+
+
+# Fitting Decision Tree to the Training set
+library(rpart)
+classifier <- rpart(formula=Liked ~ .,
+                    data=training_set)
+
+# Predicting the Test set results
+y_pred <- predict(classifier, newdata=test_set[-length(dataset)], type="class")  # remove last column of test set
+# Use type="class" so don't get a matrix of results
+
+cm_stats(test_set, y_pred, "Decision Tree")
+
+# Fitting Logistic Regression to the Training set
+classifier <- glm(formula=Liked ~ .,
+                  family=binomial,
+                  data=training_set)
+
+# Predicting the Test set results
+prob_pred <- predict(classifier, type="response", newdata=test_set[-length(dataset)])  # remove last column of test set
+y_pred <- ifelse(prob_pred > 0.5, 1, 0)
+
+cm_stats(test_set, y_pred, "Logistic Regression")
+
+# Fitting K-NN to the Training set and Predicting the Test set results
+library(class)
+# Only want first two columns of training_set and test_set
+y_pred <- knn(train=training_set[, -length(dataset)],
+              test=test_set[, -length(dataset)],
+              cl=training_set[, length(dataset)],
+              k=5)
+
+cm_stats(test_set, y_pred, "K-NN")
+
+# Fitting SVM to the Training set
+library(e1071)
+classifier <- svm(formula=Liked ~ .,
+                  data=training_set,
+                  type="C-classification",
+                  kernel="linear")
+
+# Predicting the Test set results
+y_pred <- predict(classifier, newdata=test_set[-length(dataset)])  # remove last column of test set
+
+cm_stats(test_set, y_pred, "SVM")
+
+# Fitting Kernel SVM to the Training set
+library(e1071)
+classifier <- svm(formula=Liked ~ .,
+                  data=training_set,
+                  type="C-classification",
+                  kernel="radial")  # radial basic is Gaussian
+
+# Predicting the Test set results
+y_pred <- predict(classifier, newdata=test_set[-length(dataset)])  # remove last column of test set
+
+cm_stats(test_set, y_pred, "Kernel SVM")
+
+# Fitting Naive Bayes to the Training set
+library(e1071)
+classifier <- naiveBayes(x=training_set[-length(dataset)],
+                         y=training_set$Liked)
+
+# Predicting the Test set results
+y_pred <- predict(classifier, newdata=test_set[-length(dataset)])  # remove last column of test set
+
+cm_stats(test_set, y_pred, "Naive Bayes")
+
+# Fitting Maximum Entropy to the Training set
+# install.packages("maxent")
+library(maxent)
+classifier <- maxent(feature_matrix=training_set[-length(dataset)],
+                         code_vector=training_set$Liked)
+
+# Predicting the Test set results
+y_pred <- predict(classifier, test_set[-length(dataset)])  # remove last column of test set
+
+cm <- table(test_set[, length(dataset)], as.factor(y_pred[, 1]))
+accuracy <- (cm[[1]] + cm[[4]])/nrow(test_set)
+precision <- cm[[4]]/(cm[[4]] + cm[[3]])
+recall <- cm[[4]]/(cm[[4]] + cm[[2]])
+f1_score <- 2 * precision * recall / (precision + recall)
+print("Maximum Entropy")
+print(cm)
+paste("accuracy: ", accuracy, "precision: ", precision, "recall: ", recall, "f1_score: ", f1_score)
+
+# Fitting C5.0 to the Training set
+library(C50)
+classifier <- C5.0(x=training_set[-length(dataset)],
+                         y=training_set$Liked)
+
+# Predicting the Test set results
+y_pred <- predict(classifier, newdata=test_set[-length(dataset)])  # remove last column of test set
+
+cm_stats(test_set, y_pred, "C5.0")
