@@ -1,3 +1,5 @@
+https://en.wikipedia.org/wiki/Confusion_matrix
+
 False Positive: Predicts it will happen but it doesn't
 False Negative: Predicts it won't happen but it does
 
@@ -14,3 +16,16 @@ Python
     True Positive (lower right): cm[1][1]
     False Positive (Type I error; upper right): cm[0][1]
     False Negative (Type II error; lower left): cm[1][0]
+
+
+Accuracy = (TP + TN) / (TP + TN + FP + FN)
+    Ratio of correctly predicted observations
+
+Precision = TP / (TP + FP)
+    Ratio of correct positive observations (how many positive predictions were actual positive observations); Positive Predictive Value
+
+Recall = TP / (TP + FN)
+    Ratio of correctly predicted positive events (measure of how many actual positive observations were predicted); True Positive Rate; Sensitivity
+
+F1 Score = 2 * ((Precision * Recall) / (Precision + Recall))
+    The average of both precision and recall; the harmonic mean of precision and sensitivity
