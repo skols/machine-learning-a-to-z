@@ -134,3 +134,7 @@ vignettes/*.pdf
 # Temporary files created by R markdown
 *.utf8.md
 *.knit.md
+
+# Large data zip and files
+/Part8_Deep_Learning/Section32_Convolutional_Neural_Networks/Convolutional-Neural-Networks.zip
+/Part8_Deep_Learning/Section32_Convolutional_Neural_Networks/dataset/
