@@ -1,4 +1,4 @@
-# PCA - Principal Component Analysis - Unsupervised (DV is not considered)
+# LDA - Linear Discriminant Analysis - Supervised (DV is considered)
 
 # Importing the libraries
 import numpy as np
@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler # feature scaling
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix
 from matplotlib.colors import ListedColormap  # prediction regions plot
-from sklearn.decomposition import PCA
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis as LDA
 
 
 # To see the full array, run the following
@@ -20,7 +20,7 @@ np.set_printoptions(threshold=np.nan)
 # Importing the dataset
 os.chdir("C:/Development/Courses/Kirill Eremenko Data Science Courses/\
 Machine_Learning_A-Z/Part9_Dimensionality_Reduction/\
-Section34_Principal_Component_Analysis_PCA")
+Section35_Linear_Discriminant_Analysis_LDA")
 dataset = pd.read_csv("Wine.csv")
 
 # Create a matrix of features with Age and EstimatedSalary
@@ -40,19 +40,11 @@ sc_X = StandardScaler()
 X_train = sc_X.fit_transform(X_train)
 X_test = sc_X.transform(X_test)
 
-# Applying PCA
-# pca = PCA(n_components=None)  # Do this first to see how many are needed
-# X_train = pca.fit_transform(X_train)
+# Applying LDA
+lda = LDA(n_components=2)
+X_train = lda.fit_transform(X_train, y_train)
 # use transform, not fit_transform, because already fitted to the training set
-# X_test = pca.transform(X_test)
-# explained_variance = pca.explained_variance_ratio_
-# The top 2 explain 56% of the variance, which is good to make a
-# classification model
-pca = PCA(n_components=2)
-X_train = pca.fit_transform(X_train)
-# use transform, not fit_transform, because already fitted to the training set
-X_test = pca.transform(X_test)
-explained_variance = pca.explained_variance_ratio_
+X_test = lda.transform(X_test)
 
 # Fitting Logistic Regression to the Training set
 classifier = LogisticRegression(random_state=0)
@@ -82,8 +74,8 @@ for i, j in enumerate(np.unique(y_set)):
     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
                 c = ListedColormap(('red', 'green', "blue"))(i), label = j)
 plt.title("Logistic Regression (Training Set)")
-plt.xlabel("PC1")
-plt.ylabel("PC2")
+plt.xlabel("LD1")
+plt.ylabel("LD2")
 plt.legend()
 plt.show()
 
@@ -105,7 +97,7 @@ for i, j in enumerate(np.unique(y_set)):
     plt.scatter(X_set[y_set == j, 0], X_set[y_set == j, 1],
                 c = ListedColormap(('red', 'green', "blue"))(i), label = j)
 plt.title("Logistic Regression (Test Set)")
-plt.xlabel("PC1")
-plt.ylabel("PC2")
+plt.xlabel("LD1")
+plt.ylabel("LD2")
 plt.legend()
 plt.show()
