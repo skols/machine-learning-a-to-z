@@ -66,12 +66,14 @@ accuracies.std()  # 0.0638
 parameters = [{"C": [1, 10, 100, 1000], "kernel": ["linear"]},
                {"C": [1, 10, 100, 1000], "kernel": ["rbf", "sigmoid", "poly"],
                 "gamma": [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9],
-                "degree": [2, 3, 4, 5, 6]},
+                "degree": [2, 3, 4]},
                # .5 because default is 1/n_features; 2 features here, so 1/2
         ]
-grid_search = GridSearchCV(estimator=classifier, param_grid=parameters,
-                           scoring="accuracy", cv=10, n_jobs=-1)
+#grid_search = GridSearchCV(estimator=classifier, param_grid=parameters,
+#                           scoring="accuracy", cv=10, n_jobs=-1)
 # n_jobs=-1 uses all CPUs
+grid_search = GridSearchCV(estimator=classifier, param_grid=parameters,
+                           scoring="accuracy", cv=10)
 grid_search = grid_search.fit(X_train, y_train)
 best_accuracy = grid_search.best_score_
 best_parameters = grid_search.best_params_
